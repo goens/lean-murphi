@@ -150,33 +150,43 @@ end
 
 def Formal.toString : Formal → String := formalToString
 instance : ToString Formal where toString := Formal.toString
+instance : Repr Formal where reprPrec := fun x _ => x.toString
 
 def ProcDecl.toString : ProcDecl → String := procDeclToString
 instance : ToString ProcDecl where toString := ProcDecl.toString
+instance : Repr ProcDecl where reprPrec := fun x _ => x.toString
 
 def Designator.toString : Designator → String := designatorToString
 instance : ToString Designator where toString := Designator.toString
+instance : Repr Designator where reprPrec := fun x _ => x.toString
 
 def Quantifier.toString : Quantifier → String := quantifierToString
 instance : ToString Quantifier where toString := Quantifier.toString
+instance : Repr Quantifier where reprPrec := fun x _ => x.toString
 
 def Statement.toString : Statement → String := statementToString
 instance : ToString Statement where toString := Statement.toString
+instance : Repr Statement where reprPrec := fun x _ => x.toString
 
 def Alias.toString : Alias → String := aliasToString
 instance : ToString Alias where toString := Alias.toString
+instance : Repr Alias where reprPrec := fun x _ => x.toString
 
 def Rule.toString : Rule → String := ruleToString
 instance : ToString Rule where toString := Rule.toString
+instance : Repr Rule where reprPrec := fun x _ => x.toString
 
 def Expr.toString : Expr → String := exprToString
 instance : ToString Expr where toString := Expr.toString
+instance : Repr Expr where reprPrec := fun x _ => x.toString
 
 def TypeExpr.toString : TypeExpr → String := typeExprToString
 instance : ToString TypeExpr where toString := TypeExpr.toString
+instance : Repr TypeExpr where reprPrec := fun x _ => x.toString
 
 def Decl.toString : Decl → String := declToString
 instance : ToString Decl where toString := Decl.toString
+instance : Repr Decl where reprPrec := fun x _ => x.toString
 
 def Program.toString : Program → String
   | prog =>
@@ -187,4 +197,6 @@ def Program.toString : Program → String
     let procdecls := String.join (( prog.procdecls.map ProcDecl.toString ).map fun str => str.append ";\n\n") -- String.intercalate ";\n" $ prog.procdecls.map ProcDecl.toString
     let rules := String.join (( prog.rules.map Rule.toString ).map fun str => str.append ";\n\n") -- String.intercalate ";\n" $ prog.rules.map Rule.toString
   s!"{decls}\n{procdecls}\n{rules}"
+
 instance : ToString Program where toString := Program.toString
+instance : Repr Program where reprPrec := fun p _ => p.toString

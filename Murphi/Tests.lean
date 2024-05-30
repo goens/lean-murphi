@@ -1,4 +1,4 @@
-import Murphi.Syntax
+import Murphi.EDSL
 
 open Murϕ
 
@@ -13,10 +13,10 @@ def test := "hi"
 -- lq := Sta.core_[j].lsq_.lq_;
 -- ]
 
-#check [murϕ| ld_entry .phys_addr := ld_entry .virt_addr]
-#check [murϕ| ld_entry .phys_addr := ld_entry .virt_addr]
-#check [murϕ| £foo .phys_addr := ld_entry .virt_addr]
-#check [murϕ| next_state .core_[j] .lsq_ .lq_ .ld_entries[i] := ld_entry]
+#check [murϕ| ld_entry.phys_addr := ld_entry.virt_addr]
+#check [murϕ| ld_entry.phys_addr := ld_entry.virt_addr]
+#check [murϕ| £(foo).phys_addr := ld_entry.virt_addr]
+#check [murϕ| next_state.core_[j].lsq_.lq_.ld_entries[i] := ld_entry]
 #check [murϕ| ruleset j : cores_t do endruleset]
 #check [murϕ|
 ruleset j : cores_t do
