@@ -44,7 +44,7 @@ syntax "procedure" paramident "(" sepBy(formal,";") ")" ";" (var_decls* "begin")
 syntax "function" paramident "(" sepBy(formal,";",";",allowTrailingSep) ")" ":" type_expr ";" (var_decls* "begin")? (statements)? patternIgnore("end" <|> "endfunction") : proc_decl
 
 syntax paramident : designator
-syntax designator noWs "." noWs paramident : designator
+syntax designator "." paramident : designator
 syntax designator "[" mur_expr "]" : designator
 syntax (name := simplequantifier) paramident ":" type_expr : quantifier
 syntax (name := quantifierassign) paramident ":=" mur_expr "to" mur_expr ("by" mur_expr)? : quantifier
@@ -396,6 +396,14 @@ macro_rules
 --  syntax paramident "(" expr,* ")" : expr -- still don't know what "actuals" are
 
 macro_rules
+  | `(designator| $x:ident ) => do
+    let ids := x.getId.components
+    let mkCons := fun nm : Name => `(Sum.inl $(quote nm.toString))
+    match ids with
+      | [] => panic "Error, parsed identifier with 0 components. This should not happen"
+      | name::names => do
+        let namesStxList ← names.mapM mkCons --  `($(quote <| names.mapM mkCons))
+        `(Designator.mk $(quote name.toString) $(quote namesStxList))
   | `(designator| $x:paramident ) => do `(Designator.mk $(← expandParamIdent x) [])
   | `(designator| $d:designator [$e:mur_expr] ) => `(Designator.cons [murϕ_designator| $d] $ Sum.inr [murϕ_expr| $e])
   | `(designator| $d:designator.$x:paramident ) => do `(Designator.cons [murϕ_designator| $d] $ Sum.inl $(← expandParamIdent x))
